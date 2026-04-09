@@ -18,4 +18,6 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Build con Docker Compose
-      run: docker compose build
+      run: |
+        ls -la # Esto nos mostrará en los logs si el archivo docker-compose.yml está aquí
+        sudo docker compose build
