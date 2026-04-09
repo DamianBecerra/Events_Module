@@ -1,0 +1,6 @@
+@Events_Model.BackEnd_HostAddress = http://localhost:5123
+
+GET {{Events_Model.BackEnd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="Events_Model.BackEnd/Events_Model.BackEnd.csproj" Id="8638a71e-62c9-4ca6-a1e1-94de9a09e10e" />
+</Solution>

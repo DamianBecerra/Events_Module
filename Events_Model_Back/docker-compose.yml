@@ -1,0 +1,24 @@
+name: events_docker
+services:
+  events_model.backend:
+    image: ${DOCKER_REGISTRY-}eventsmodelbackend
+    container_name: events-api
+    build:
+      context: .
+      dockerfile: Events_Model.BackEnd/Dockerfile
+    depends_on:
+      - sqlserver  
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: events-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password123!
+    ports:
+      - "1444:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
+volumes:
+  sqlserverdata:
