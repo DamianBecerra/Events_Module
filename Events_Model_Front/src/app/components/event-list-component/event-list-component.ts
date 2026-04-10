@@ -3,12 +3,15 @@ import { EventService } from '../../services/event.service';
 import { AppEvent } from '../../models/event.model';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-event-list-component',
   imports: [CommonModule, 
             FormsModule, 
-            DatePipe
+            DatePipe,
           ],
   templateUrl: './event-list-component.html',
   styleUrl: './event-list-component.css',
@@ -28,12 +31,16 @@ export class EventListComponent implements OnInit{
 
 
   constructor(private eventService: EventService, 
-    private cdr: ChangeDetectorRef){
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private router: Router
+  ){
     
   }
 
   ngOnInit(): void{
       this.loadEvents();
+
     }
 
   loadEvents(): void{
@@ -80,8 +87,24 @@ export class EventListComponent implements OnInit{
     this.loadEvents();
   }
 
-  openModal(event: any): void{
-    this.selectedEvent = event;
+  openEventModal(id: number): void {
+    this.eventService.getEventById(id).subscribe({
+      next: (response: any) => {
+        this.selectedEvent = response;
+        this.cdr.detectChanges();
+
+        const modalElement = document.getElementById('eventModal');
+        if (modalElement) {
+          const modal = new bootstrap.Modal(modalElement);
+          modal.show();
+        }
+      },
+      error: (err) => console.error('Error al cargar detalle', err)
+    });
+  }
+
+  closeModal(): void {
+  this.router.navigate(['/eventos']);
   }
 
 }

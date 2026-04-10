@@ -16,5 +16,9 @@ export class EventService {
   getEvents(page: number, size: number): Observable<AppEvent[]>{
     return this.http.get<AppEvent[]>(`${this.apiUrl}?page=${page}&pageSize${size}`);
   }
+
+  getEventById(id: number): Observable<AppEvent>{
+    return this.http.get<AppEvent>(`${this.apiUrl}/${id}`);
+  }
   
 }

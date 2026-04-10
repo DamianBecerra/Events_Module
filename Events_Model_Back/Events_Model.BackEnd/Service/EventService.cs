@@ -19,6 +19,7 @@ namespace Events_Model.BackEnd.Service
 
             var dtos = items.Select(e => new EventDto
             {
+                Id = e.IdEvent,
                 Title = e.Title,
                 Description = e.Description,
                 Date = e.Date,
@@ -49,6 +50,7 @@ namespace Events_Model.BackEnd.Service
 
             return new EventDto
             {
+                Id = eventSelected.IdEvent,
                 Title = eventSelected.Title,
                 Description = eventSelected.Description,
                 Date = eventSelected.Date,

@@ -6,5 +6,9 @@ export const routes: Routes = [
     {
         path: '',
         component: EventListComponent
+    },
+    {
+        path: 'eventos/:id', 
+        component: EventListComponent
     }
 ];
