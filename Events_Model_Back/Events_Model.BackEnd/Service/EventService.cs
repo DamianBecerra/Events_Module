@@ -13,9 +13,9 @@ namespace Events_Model.BackEnd.Service
             _repository = repository;
         }
 
-        public async Task<Pagination<IEnumerable<EventDto>>> GetEventAsync(DateTime? date, int page, int pageSize)
+        public async Task<Pagination<IEnumerable<EventDto>>> GetEventAsync(DateTime? startDate, DateTime? endDate, int page, int pageSize)
         {
-            var (items, totalEvents) = await _repository.GetEventsAsync(date, page, pageSize);
+            var (items, totalEvents) = await _repository.GetEventsAsync(startDate, endDate, page, pageSize);
 
             var dtos = items.Select(e => new EventDto
             {

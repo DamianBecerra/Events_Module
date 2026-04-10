@@ -16,14 +16,15 @@ namespace Events_Model.BackEnd.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Getall(
-            [FromQuery] DateTime? date,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10
             )
         {
             if (page <= 0) page = 1;
 
-            var response = await _service.GetEventAsync(date, page, pageSize);
+            var response = await _service.GetEventAsync(startDate, endDate, page, pageSize);
             return Ok(response);
 
         }

@@ -20,5 +20,15 @@ services:
     volumes:
       - sqlserverdata:/var/opt/mssql
 
+  events_model.frontend:
+    container_name: events-web
+    build:
+      context: ./Events_Model_Front 
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80" 
+    depends_on:
+      - events_model.backend
+
 volumes:
   sqlserverdata:
