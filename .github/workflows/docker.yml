@@ -20,4 +20,4 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Build con Docker Compose
-      run: sudo docker compose build
+      run: sudo docker compose -f docker-compose.yml build
