@@ -5,7 +5,7 @@ services:
     container_name: events-api
     build:
       context: .
-      dockerfile: Events_Model_Back/Events_Model.BackEnd/Dockerfile
+      dockerfile: Events_Model.BackEnd/Dockerfile
     depends_on:
       - sqlserver  
 
