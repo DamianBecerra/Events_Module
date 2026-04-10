@@ -1,11 +1,12 @@
 ﻿using Events_Model.BackEnd.Data;
 using Events_Model.BackEnd.Models;
 using Events_Model.BackEnd.Models.DTOs;
+using Events_Model.BackEnd.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Events_Model.BackEnd.Repository
 {
-    public class EventRepository
+    public class EventRepository : IEventrepository
     {
         private readonly DataContext _context;
 

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Events_Model.BackEnd.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class EventController : Controller
     {
         private readonly IEventService _service;

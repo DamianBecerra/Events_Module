@@ -1,4 +1,8 @@
 using Events_Model.BackEnd.Data;
+using Events_Model.BackEnd.Repository;
+using Events_Model.BackEnd.Repository.IRepository;
+using Events_Model.BackEnd.Service;
+using Events_Model.BackEnd.Service.IService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +12,9 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql")));
 
 // Add services to the container.
+
+builder.Services.AddScoped<IEventrepository, EventRepository>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
