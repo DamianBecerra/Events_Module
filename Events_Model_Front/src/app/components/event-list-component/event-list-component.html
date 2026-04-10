@@ -1,0 +1,26 @@
+<div class="event-container">
+    <h2>Listado de Eventos</h2>
+
+    <table>
+        <thead>
+            <tr>
+            <th>Titulo</th>
+            <th>Descripción</th>
+            <th>fecha</th>
+            <th>Direccion</th>
+            <th>Coordenadas(Latitud/Longitud)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (itemEvent of events; track $index){
+                <tr>
+                <td>{{itemEvent.title}}</td>
+                <td>{{itemEvent.description}}</td>
+                <td>{{itemEvent.date | date:'dd/MM/yyyy'}}</td>
+                <td>{{itemEvent.location.address}}</td>
+                <td>{{itemEvent.location.lat}}, {{itemEvent.location.long}}</td>
+                </tr> 
+            }    
+        </tbody>
+    </table>
+</div>

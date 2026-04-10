@@ -23,7 +23,23 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Configuracion del CORS par que el front pueda correr
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") 
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+
+//implementacion del Cors 
+app.UseCors("AllowAngularApp");
 
 //Validacion del estado de la base de datos al iniciar la aplicacion
 
