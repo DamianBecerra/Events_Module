@@ -8,9 +8,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-event-list-component',
   imports: [CommonModule, 
             FormsModule, 
-            DatePipe, 
-            DecimalPipe
-
+            DatePipe
           ],
   templateUrl: './event-list-component.html',
   styleUrl: './event-list-component.css',
@@ -22,6 +20,13 @@ export class EventListComponent implements OnInit{
   endDate: string = '';
   allEvents: any[] = [];
 
+  selectedEvent: any = null;
+
+  currentPage: number = 1;
+  totalPages: number = 10;
+  totalEvents: number = 0;
+
+
   constructor(private eventService: EventService, 
     private cdr: ChangeDetectorRef){
     
@@ -32,10 +37,13 @@ export class EventListComponent implements OnInit{
     }
 
   loadEvents(): void{
-    this.eventService.getEvents().subscribe({
+    this.eventService.getEvents(this.currentPage, this.totalPages).subscribe({
       next: (response: any) => {
         this.allEvents = response.data;
         this.events = response.data;
+        this.currentPage = response.currentPage;
+        this.totalPages = response.totalPages;
+        this.totalEvents = response.totalEvents;
         this.cdr.detectChanges();
         //console.log('Eventos cargados', this.events)
       },
@@ -43,6 +51,11 @@ export class EventListComponent implements OnInit{
         console.log('Error al conectar con la api', err);
       }
     })
+  }
+
+  changePage(newPage: number){
+    this.currentPage = newPage;
+    this.loadEvents();
   }
 
   filterByDate(): void {
@@ -65,6 +78,10 @@ export class EventListComponent implements OnInit{
     this.startDate = '';
     this.endDate = '';
     this.loadEvents();
+  }
+
+  openModal(event: any): void{
+    this.selectedEvent = event;
   }
 
 }

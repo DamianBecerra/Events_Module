@@ -13,8 +13,8 @@ export class EventService {
 
   }
 
-  getEvents(): Observable<AppEvent[]>{
-    return this.http.get<AppEvent[]>(this.apiUrl);
+  getEvents(page: number, size: number): Observable<AppEvent[]>{
+    return this.http.get<AppEvent[]>(`${this.apiUrl}?page=${page}&pageSize${size}`);
   }
   
 }

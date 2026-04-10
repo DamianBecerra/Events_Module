@@ -5,31 +5,34 @@
       <span class="badge bg-light text-primary">{{ events.length }} Eventos encontrados</span>
     </div>
 
+    <!--Filtro de fechas-->
+
     <div class="container mt-4">
-  <div class="card mb-3 shadow-sm">
-    <div class="card-body">
-      <div class="row align-items-end">
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Fecha Inicio</label>
-          <input type="date" class="form-control" [(ngModel)]="startDate">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Fecha Fin</label>
-          <input type="date" class="form-control" [(ngModel)]="endDate">
-        </div>
-        <div class="col-md-4 d-flex gap-2">
-          <button class="btn btn-primary w-100" (click)="filterByDate()">
-            <i class="bi bi-filter"></i> Filtrar
-          </button>
-          <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
-            Limpiar
-          </button>
+      <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+          <div class="row align-items-end">
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Fecha Inicio</label>
+              <input type="date" class="form-control" [(ngModel)]="startDate">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Fecha Fin</label>
+              <input type="date" class="form-control" [(ngModel)]="endDate">
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+              <button class="btn btn-primary w-100" (click)="filterByDate()">
+                <i class="bi bi-filter"></i> Filtrar
+              </button>
+              <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+                Limpiar
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  </div>
+    <!--Tabla-->
 
     <div class="card-body p-0">
       <div class="table-responsive">
@@ -37,30 +40,24 @@
           <thead class="table-dark">
             <tr>
               <th scope="col" class="ps-3">Título</th>
-              <th scope="col">Descripción</th>
               <th scope="col">Fecha</th>
-              <th scope="col">Dirección</th>
-              <th scope="col" class="text-center">Coordenadas (Lat/Long)</th>
             </tr>
           </thead>
           <tbody>
             @for (itemEvent of events; track $index) {
               <tr>
-                <td class="fw-bold ps-3">{{ itemEvent.title }}</td>
-                <td>
-                    <small class="text-muted text-truncate d-inline-block" style="max-width: 250px;">
-                        {{ itemEvent.description }}
-                    </small>
+                <td class="fw-bold ps-3">
+                  <a href="javascript:void(0)"
+                    class="text-decoration-none fw-bold" 
+                    (click)="openModal(itemEvent)"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#eventModal">
+                    {{ itemEvent.title }}
+                  </a>
                 </td>
                 <td>
                   <i class="bi bi-calendar3 me-1"></i>
                   {{ itemEvent.date | date:'dd/MM/yyyy' }}
-                </td>
-                <td>{{ itemEvent.location.address }}</td>
-                <td class="text-center">
-                  <span class="badge bg-secondary opacity-75">
-                    {{ itemEvent.location.lat | number:'1.2-2' }}, {{ itemEvent.location.long | number:'1.2-2' }}
-                  </span>
                 </td>
               </tr>
             } @empty {
@@ -72,7 +69,91 @@
             }
           </tbody>
         </table>
+
+        <!--Indices de pagiancion-->
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <small class="text-muted">
+            Página <strong>{{currentPage}}</strong> de <strong>{{totalPages}}</strong> 
+            (Total: {{totalEvents}} eventos)
+          </small>
+          
+          <nav aria-label="Page navigation">
+            <ul class="pagination mb-0">
+              
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="changePage(currentPage - 1)">Anterior</button>
+              </li>
+              
+              <li class="page-item active">
+                <span class="page-link">{{currentPage}}</span>
+              </li>
+              
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="changePage(currentPage + 1)">Siguiente</button>
+              </li>
+
+            </ul>
+          </nav>
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!--Ventana modal-->
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      
+      @if (selectedEvent) {
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="eventModalLabel">Detalles del Evento</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+          <h3 class="text-primary mb-3">{{ selectedEvent.title }}</h3>
+          
+          <p class="mb-4 text-muted" style="white-space: pre-wrap;">
+            {{ selectedEvent.description }}
+          </p>
+          
+          <hr>
+          
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="small text-uppercase fw-bold text-muted">Fecha</label>
+              <p><i class="bi bi-calendar-event me-2"></i>{{ selectedEvent.date | date:'fullDate' }}</p>
+            </div>
+            <div class="col-6">
+              <label class="small text-uppercase fw-bold text-muted">Ubicación</label>
+              <p><i class="bi bi-geo-alt me-2"></i>{{ selectedEvent.location.address }}</p>
+            </div>
+            <div class="col-12">
+              <div class="bg-light p-3 rounded">
+                <label class="small text-uppercase fw-bold text-muted d-block mb-2">Coordenadas Exactas</label>
+                <div class="d-flex justify-content-around text-center">
+                  <div>
+                    <span class="d-block small">Latitud</span>
+                    <strong>{{ selectedEvent.location.lat }}</strong>
+                  </div>
+                  <div class="border-start ps-4">
+                    <span class="d-block small">Longitud</span>
+                    <strong>{{ selectedEvent.location.long }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      }
+
     </div>
   </div>
 </div>
