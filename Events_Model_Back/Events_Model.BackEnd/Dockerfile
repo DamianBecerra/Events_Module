@@ -13,10 +13,10 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 WORKDIR /src
-COPY ["Events_Model.BackEnd/Events_Model.BackEnd.csproj", "Events_Model.BackEnd/"]
-RUN dotnet restore "Events_Model.BackEnd/Events_Model.BackEnd.csproj"
+COPY ["Events_Model_Back/Events_Model.BackEnd/Events_Model.BackEnd.csproj", "Events_Model_Back/Events_Model.BackEnd/"]
+RUN dotnet restore "Events_Model_Back/Events_Model.BackEnd/Events_Model.BackEnd.csproj"
 COPY . .
-WORKDIR "/src/Events_Model.BackEnd"
+WORKDIR "/src/Events_Model_Back/Events_Model.BackEnd"
 RUN dotnet build "Events_Model.BackEnd.csproj" -c Release -o /app/build
 
 # Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
